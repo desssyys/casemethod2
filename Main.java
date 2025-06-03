@@ -4,8 +4,10 @@ public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         LinkedListAntrian antrian = new LinkedListAntrian();
-        QueueTransaksi riwayat = new QueueTransaksi(100);
-
+        TransaksiPengisian[] riwayatTransaksi = new TransaksiPengisian[100];
+        int totalTransaksi = 0;
+        int jumlahMotor = 0;
+        int jumlahMobil = 0;
         int pilihan;
 
         do {
@@ -24,16 +26,17 @@ public class Main {
                 case 1:
                     System.out.print("Masukkan Plat Nomor: ");
                     String plat = sc.nextLine();
-                    System.out.print("Masukkan Jenis Kendaraan: ");
+                    System.out.print("Masukkan Jenis Kendaraan (Mobil/Motor): ");
                     String tipe = sc.nextLine();
-                    System.out.print("Masukkan Merek: ");
+                    System.out.print("Masukkan Merk: ");
                     String merek = sc.nextLine();
+
                     Kendaraan k = new Kendaraan(plat, tipe, merek);
                     antrian.tambahAntrian(k);
                     break;
 
                 case 2:
-                    System.out.println("\n-- Daftar Antrian --");
+                    System.out.println("\n-- Antrian Kendaraan --");
                     antrian.tampilkanAntrian();
                     break;
 
@@ -46,7 +49,8 @@ public class Main {
                     if (dilayani == null) {
                         System.out.println(">> Tidak ada kendaraan dalam antrian.");
                     } else {
-                        System.out.println(">> Melayani kendaraan: " + dilayani.getPlatNomor());
+                        System.out.println("Petugas melayani " + dilayani.getPlatNomor());
+
                         System.out.print("Masukkan Jenis BBM: ");
                         String jenisBBM = sc.nextLine();
                         System.out.print("Masukkan Harga per liter: ");
@@ -57,14 +61,34 @@ public class Main {
 
                         BBM bbm = new BBM(jenisBBM, harga);
                         TransaksiPengisian transaksi = new TransaksiPengisian(dilayani, bbm, liter);
-                        riwayat.tambah(transaksi);
+                        riwayatTransaksi[totalTransaksi++] = transaksi;
+
+                        // Update jumlah berdasarkan tipe kendaraan
+                        String tipeKendaraan = dilayani.tipe.toLowerCase();
+                        if (tipeKendaraan.equals("motor")) {
+                            jumlahMotor++;
+                        } else if (tipeKendaraan.equals("mobil")) {
+                            jumlahMobil++;
+                        }
+
                         System.out.println(">> Transaksi berhasil dicatat.");
                     }
                     break;
 
                 case 5:
                     System.out.println("\n-- Riwayat Transaksi --");
-                    riwayat.tampilkanRiwayat();
+                    if (totalTransaksi == 0) {
+                        System.out.println("Belum ada transaksi.");
+                    } else {
+                        System.out.println("Daftar Transaksi:");
+                        for (int i = 0; i < totalTransaksi; i++) {
+                            riwayatTransaksi[i].tampilkanInformasi();
+                        }
+
+                        System.out.println("\n--- Rekap Jenis Kendaraan Dilayani ---");
+                        System.out.println("Jumlah Motor: " + jumlahMotor);
+                        System.out.println("Jumlah Mobil: " + jumlahMobil);
+                    }
                     break;
 
                 case 0:
@@ -72,9 +96,9 @@ public class Main {
                     break;
 
                 default:
-                    System.out.println(">> Pilihan tidak valid.");
+                    System.out.println("Pilihan tidak valid.");
+                    break;
             }
-
         } while (pilihan != 0);
     }
 }

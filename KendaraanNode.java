@@ -7,3 +7,4 @@ public class KendaraanNode {
         this.next = null;
     }
 }
+
