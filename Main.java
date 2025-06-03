@@ -3,10 +3,8 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        Kendaraan[] antrian = new Kendaraan[100];
+        AntrianKendaraan antrian = new AntrianKendaraan(100);
         TransaksiPengisian[] riwayatTransaksi = new TransaksiPengisian[100];
-
-        int head = 0, tail = 0;
         int totalTransaksi = 0;
         int pilihan;
 
@@ -20,7 +18,7 @@ public class Main {
             System.out.println("0. Keluar");
             System.out.print("Pilih: ");
             pilihan = sc.nextInt();
-            sc.nextLine();
+            sc.nextLine(); // buang newline
 
             switch (pilihan) {
                 case 1:
@@ -31,32 +29,24 @@ public class Main {
                     System.out.print("Masukkan Merk: ");
                     String merek = sc.nextLine();
 
-                    antrian[tail++] = new Kendaraan(plat, tipe, merek);
-                    System.out.println(">> Kendaraan masuk ke dalam antrian.");
+                    Kendaraan k = new Kendaraan(plat, tipe, merek);
+                    antrian.tambahAntrian(k);
                     break;
 
                 case 2:
                     System.out.println("\n-- Antrian Kendaraan --");
-                    if (tail == head) {
-                        System.out.println("Antrian kosong.");
-                    } else {
-                        for (int i = head; i < tail; i++) {
-                            System.out.println("Antrian Kendaraan:");
-                            antrian[i].tampilkanInformasi();
-                            System.out.println();
-                        }
-                    }
+                    antrian.tampilkanAntrian();
                     break;
 
                 case 3:
-                    System.out.println(">> Jumlah kendaraan dalam antrian: " + (tail - head));
+                    System.out.println(">> Jumlah kendaraan dalam antrian: " + antrian.jumlahAntrian());
                     break;
 
                 case 4:
-                    if (head == tail) {
+                    Kendaraan dilayani = antrian.layaniKendaraan();
+                    if (dilayani == null) {
                         System.out.println(">> Tidak ada kendaraan dalam antrian.");
                     } else {
-                        Kendaraan dilayani = antrian[head++];
                         System.out.println("Petugas melayani " + dilayani.getPlatNommor());
 
                         System.out.print("Masukkan Jenis BBM: ");
@@ -65,7 +55,7 @@ public class Main {
                         double harga = sc.nextDouble();
                         System.out.print("Masukkan Jumlah liter: ");
                         double liter = sc.nextDouble();
-                        sc.nextLine();
+                        sc.nextLine(); // buang newline
 
                         BBM bbm = new BBM(jenisBBM, harga);
                         TransaksiPengisian transaksi = new TransaksiPengisian(dilayani, bbm, liter);
@@ -95,7 +85,6 @@ public class Main {
                     System.out.println("Pilihan tidak valid.");
                     break;
             }
-
         } while (pilihan != 0);
     }
 }
