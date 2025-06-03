@@ -12,6 +12,9 @@ public class TransaksiPengisian {
     }
 
     public void tampilkanInformasi() {
-        System.out.println(kendaraan.getPlatNommor() + ": Rp " + totalBayar);
+        System.out.println("Plat: " + kendaraan.getPlatNomor());
+        System.out.println("BBM: " + bbm.getNamaBBM());
+        System.out.println("Liter: " + liter);
+        System.out.println("Total Bayar: Rp " + totalBayar);
     }
 }

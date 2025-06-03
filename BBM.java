@@ -7,8 +7,11 @@ public class BBM {
         this.hargaPerLiter = hargaPerLiter;
     }
 
+    public String getNamaBBM() {
+        return namaBBM;
+    }
+
     public double getHargaPerLiter() {
         return hargaPerLiter;
     }
 }
-

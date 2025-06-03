@@ -3,9 +3,9 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        AntrianKendaraan antrian = new AntrianKendaraan(100);
-        TransaksiPengisian[] riwayatTransaksi = new TransaksiPengisian[100];
-        int totalTransaksi = 0;
+        LinkedListAntrian antrian = new LinkedListAntrian();
+        QueueTransaksi riwayat = new QueueTransaksi(100);
+
         int pilihan;
 
         do {
@@ -26,15 +26,14 @@ public class Main {
                     String plat = sc.nextLine();
                     System.out.print("Masukkan Jenis Kendaraan: ");
                     String tipe = sc.nextLine();
-                    System.out.print("Masukkan Merk: ");
+                    System.out.print("Masukkan Merek: ");
                     String merek = sc.nextLine();
-
                     Kendaraan k = new Kendaraan(plat, tipe, merek);
                     antrian.tambahAntrian(k);
                     break;
 
                 case 2:
-                    System.out.println("\n-- Antrian Kendaraan --");
+                    System.out.println("\n-- Daftar Antrian --");
                     antrian.tampilkanAntrian();
                     break;
 
@@ -47,8 +46,7 @@ public class Main {
                     if (dilayani == null) {
                         System.out.println(">> Tidak ada kendaraan dalam antrian.");
                     } else {
-                        System.out.println("Petugas melayani " + dilayani.getPlatNommor());
-
+                        System.out.println(">> Melayani kendaraan: " + dilayani.getPlatNomor());
                         System.out.print("Masukkan Jenis BBM: ");
                         String jenisBBM = sc.nextLine();
                         System.out.print("Masukkan Harga per liter: ");
@@ -59,22 +57,14 @@ public class Main {
 
                         BBM bbm = new BBM(jenisBBM, harga);
                         TransaksiPengisian transaksi = new TransaksiPengisian(dilayani, bbm, liter);
-                        riwayatTransaksi[totalTransaksi++] = transaksi;
-
+                        riwayat.tambah(transaksi);
                         System.out.println(">> Transaksi berhasil dicatat.");
                     }
                     break;
 
                 case 5:
                     System.out.println("\n-- Riwayat Transaksi --");
-                    if (totalTransaksi == 0) {
-                        System.out.println("Belum ada transaksi.");
-                    } else {
-                        System.out.println("Daftar Transaksi:");
-                        for (int i = 0; i < totalTransaksi; i++) {
-                            riwayatTransaksi[i].tampilkanInformasi();
-                        }
-                    }
+                    riwayat.tampilkanRiwayat();
                     break;
 
                 case 0:
@@ -82,9 +72,9 @@ public class Main {
                     break;
 
                 default:
-                    System.out.println("Pilihan tidak valid.");
-                    break;
+                    System.out.println(">> Pilihan tidak valid.");
             }
+
         } while (pilihan != 0);
     }
 }
